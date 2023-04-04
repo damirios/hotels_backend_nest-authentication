@@ -8,6 +8,7 @@ import { UsersModule } from "./users/users.module";
 import { RolesModule } from './roles/roles.module';
 import { Role } from "./roles/roles.model";
 import { ProfilesRoles } from "./roles/profile-roles.model";
+import { AuthModule } from './auth/auth.module';
 
 
 // основной модуль нашего приложения
@@ -32,7 +33,8 @@ import { ProfilesRoles } from "./roles/profile-roles.model";
             autoLoadModels: true // sequelize будет автоматически создавать таблицы на основе наших моделей
         }),
         ProfilesModule,
-        RolesModule
+        RolesModule,
+        AuthModule
     ]
 
 }) // в Nest всё построено вокруг декораторов (@Module - один из них)
