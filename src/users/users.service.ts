@@ -11,11 +11,11 @@ export class UsersService {
 
     async createUser(dto: CreateUserDto) {
         const user = await this.userRepository.create(dto);
-        return user.id; 
+        return user.id;
     }
 
     async getAllUsers() {
-        const users = await this.userRepository.findAll();
+        const users = await this.userRepository.findAll({include: {all: true}});
         return users;
     }
 

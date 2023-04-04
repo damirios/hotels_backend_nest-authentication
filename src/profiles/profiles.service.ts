@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { RolesService } from 'src/roles/roles.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { Profile } from './profiles.model';
@@ -7,10 +8,12 @@ import { Profile } from './profiles.model';
 @Injectable()
 export class ProfilesService {
 
-    constructor(@InjectModel(Profile) private profileRepository: typeof Profile) {}
+    constructor(@InjectModel(Profile) private profileRepository: typeof Profile, private roleService: RolesService) {}
 
     async createProfile(dto: CreateProfileDto, userID: number) {
-        const profile = await this.profileRepository.create({...dto, userID});
+        const profile = await this.profileRepository.create({...dto, userID}, {include: {all: true}});
+        const startingRole = await this.roleService.getRoleByValue('user');
+        await profile.$set('roles', [startingRole.id]); // даём новому пользователю роль user по умолчанию
         return profile;
     }
 

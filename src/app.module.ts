@@ -5,6 +5,9 @@ import { Profile } from "./profiles/profiles.model";
 import { ProfilesModule } from './profiles/profiles.module';
 import { User } from "./users/users.model";
 import { UsersModule } from "./users/users.module";
+import { RolesModule } from './roles/roles.module';
+import { Role } from "./roles/roles.model";
+import { ProfilesRoles } from "./roles/profile-roles.model";
 
 
 // основной модуль нашего приложения
@@ -25,10 +28,11 @@ import { UsersModule } from "./users/users.module";
             username: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASSWORD,
             database: process.env.POSTGRES_DB,
-            models: [Profile, User], // здесь содержатся модели (соответствуют таблицам из БД)
+            models: [Profile, User, Role, ProfilesRoles], // здесь содержатся модели (соответствуют таблицам из БД)
             autoLoadModels: true // sequelize будет автоматически создавать таблицы на основе наших моделей
         }),
-        ProfilesModule
+        ProfilesModule,
+        RolesModule
     ]
 
 }) // в Nest всё построено вокруг декораторов (@Module - один из них)
