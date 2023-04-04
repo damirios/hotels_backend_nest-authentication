@@ -35,4 +35,9 @@ export class UsersService {
 
         throw new HttpException("Пользователь не найден", HttpStatus.NOT_FOUND);
     }
+
+    async deleteUser(id: number) {
+        const user = await this.userRepository.destroy({where: {id}});
+        return user;
+    }
 }

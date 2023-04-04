@@ -39,4 +39,9 @@ export class ProfilesService {
 
         throw new HttpException("Пользователь не найден", HttpStatus.NOT_FOUND);
     }
+
+    async deleteProfile(id: number) {
+        const profile = await this.profileRepository.destroy({where: {id}});
+        return profile;
+    }
 }

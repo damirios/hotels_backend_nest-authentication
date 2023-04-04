@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, Param, Post, Put } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { CreateUserDto } from '../users/dto/create-user.dto';
@@ -42,6 +42,13 @@ export class ProfilesController {
         }
 
         const profile = await this.profilesService.updateProfile(id, dto);
+        return profile;
+    }
+
+    @Delete('/:id')
+    async deleteOne(@Param('id') id: number) {
+        const profile = await this.profilesService.deleteProfile(id);
+        const user = await this.usersService.deleteUser(id);
         return profile;
     }
 }
