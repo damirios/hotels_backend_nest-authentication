@@ -4,13 +4,13 @@ import { RolesController } from './roles.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Role } from './roles.model';
 import { User } from 'src/users/users.model';
-import { ProfilesRoles } from './profile-roles.model';
+import { UsersRoles } from './users-roles.model';
 
 @Module({
   providers: [RolesService],
   controllers: [RolesController],
   imports: [
-    SequelizeModule.forFeature([Role, User, ProfilesRoles]) // импортируем модель ролей
+    SequelizeModule.forFeature([Role, User, UsersRoles]) // импортируем модель ролей
   ],
   exports: [
     RolesService

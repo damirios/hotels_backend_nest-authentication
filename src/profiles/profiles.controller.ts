@@ -1,29 +1,15 @@
-import { Body, Controller, Delete, Get, HttpException, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Put } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
-import { CreateProfileDto } from './dto/create-profile.dto';
-import { CreateUserDto } from '../users/dto/create-user.dto';
 import { ProfilesService } from './profiles.service';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { User } from 'src/users/users.model';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Profile } from './profiles.model';
-
 @ApiTags("Пользователь и профиль")
 @Controller('profiles')
 export class ProfilesController {
 
     constructor(private profilesService: ProfilesService, private usersService: UsersService) {}
-
-    @ApiOperation({summary: "Создание пользователя и его профиля"})
-    @ApiResponse({status: 200, type: Profile})
-    @Post()
-    async create(@Body() newUser: {profileDto: CreateProfileDto, userDto: CreateUserDto}) {
-        const { profileDto, userDto } = newUser;
-        const userID = await this.usersService.createUser(userDto);
-        const profile = this.profilesService.createProfile(profileDto, userID);
-
-        return profile;
-    }
 
     @ApiOperation({summary: "Получение данных о пользователе и его профиле"})
     @ApiResponse({status: 200, type: Profile})

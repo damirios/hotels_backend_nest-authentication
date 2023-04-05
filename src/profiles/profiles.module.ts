@@ -12,6 +12,9 @@ import { ProfilesService } from './profiles.service';
 	imports: [
 		SequelizeModule.forFeature([Profile]),
 		UsersModule, RolesModule
+	],
+	exports: [
+		ProfilesService
 	]
 })
 export class ProfilesModule {}

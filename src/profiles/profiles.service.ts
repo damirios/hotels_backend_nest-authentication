@@ -10,15 +10,18 @@ export class ProfilesService {
 
     constructor(@InjectModel(Profile) private profileRepository: typeof Profile, private roleService: RolesService) {}
 
-    async createProfile(dto: CreateProfileDto, userID: number) {
-        const profile = await this.profileRepository.create({...dto, userID}, {include: {all: true}});
-        const startingRole = await this.roleService.getRoleByValue('user');
-        await profile.$set('roles', [startingRole.id]); // даём новому пользователю роль user по умолчанию
+    async createProfile(dto: CreateProfileDto) {
+        const profile = await this.profileRepository.create(dto, {include: {all: true}});
         return profile;
     }
 
     async getProfileByID(id: number) {
         const profile = await this.profileRepository.findByPk(id, {include: {all: true}});
+        return profile;
+    }
+
+    async getProfileByUserID(id: number) {
+        const profile = await this.profileRepository.findOne({where: {userID: id}});
         return profile;
     }
 
