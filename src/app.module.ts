@@ -8,6 +8,7 @@ import { RolesModule } from './roles/roles.module';
 import { Role } from "./roles/roles.model";
 import { AuthModule } from './auth/auth.module';
 import { UsersRoles } from "./roles/users-roles.model";
+import { UsersModule } from "./users/users.module";
 
 
 // основной модуль нашего приложения
@@ -32,6 +33,7 @@ import { UsersRoles } from "./roles/users-roles.model";
             autoLoadModels: true // sequelize будет автоматически создавать таблицы на основе наших моделей
         }),
         ProfilesModule,
+        UsersModule,
         RolesModule,
         AuthModule
     ]

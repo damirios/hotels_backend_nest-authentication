@@ -23,8 +23,13 @@ export class UsersService {
         return users;
     }
 
+    async getUserByID(userID: number) {
+        const user = await this.userRepository.findByPk(userID, {include: {all: true}});
+        return user;
+    }
+
     async getUserByEmail(email: string) {
-        const user = await this.userRepository.findOne({where: {email}});
+        const user = await this.userRepository.findOne({where: {email}, include: {all: true}});
         return user;
     }
 

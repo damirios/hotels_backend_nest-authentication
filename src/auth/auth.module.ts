@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { ProfilesModule } from 'src/profiles/profiles.module';
 import { UsersModule } from 'src/users/users.module';
@@ -10,7 +10,7 @@ import { AuthService } from './auth.service';
 	providers: [AuthService],
 	imports: [
 		UsersModule,
-		ProfilesModule,
+		forwardRef(() => ProfilesModule),
 		JwtModule.register({ // регистрируем в модуле авторизации модуль jwt, чтобы с ним работать
 			secret: process.env.PRIVATE_KEY || 'secret',
 			signOptions: {
@@ -18,5 +18,8 @@ import { AuthService } from './auth.service';
 			}
 		})
 	],
+	exports: [
+		AuthService, JwtModule
+	]
 })
 export class AuthModule {}

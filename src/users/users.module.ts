@@ -13,7 +13,7 @@ import { UsersService } from './users.service';
 		RolesModule
 	],
 	exports: [
-		UsersService,
+		UsersService
 	]
 })
 export class UsersModule {}
