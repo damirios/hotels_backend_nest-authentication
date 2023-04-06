@@ -9,7 +9,11 @@ import { Role } from "./roles/roles.model";
 import { AuthModule } from './auth/auth.module';
 import { UsersRoles } from "./roles/users-roles.model";
 import { UsersModule } from "./users/users.module";
-
+import { TextBlockModule } from './text-block/text-block.module';
+import { TextBlock } from "./text-block/text-block.model";
+import { FilesModule } from './files/files.module';
+import { ServeStaticModule } from "@nestjs/serve-static";
+import * as path from 'path';
 
 // основной модуль нашего приложения
 @Module({
@@ -22,6 +26,9 @@ import { UsersModule } from "./users/users.module";
         ConfigModule.forRoot({
             envFilePath: `.${process.env.NODE_ENV}.env` // путь до файла конфигурации
         }),
+        ServeStaticModule.forRoot({
+            rootPath: path.resolve(__dirname, 'static'),
+        }),
         SequelizeModule.forRoot({
             dialect: 'postgres',
             host: process.env.POSTGRES_HOST,
@@ -29,13 +36,15 @@ import { UsersModule } from "./users/users.module";
             username: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASSWORD,
             database: process.env.POSTGRES_DB,
-            models: [Profile, User, Role, UsersRoles], // здесь содержатся модели (соответствуют таблицам из БД)
+            models: [Profile, User, Role, UsersRoles, TextBlock], // здесь содержатся модели (соответствуют таблицам из БД)
             autoLoadModels: true // sequelize будет автоматически создавать таблицы на основе наших моделей
         }),
         ProfilesModule,
         UsersModule,
         RolesModule,
-        AuthModule
+        AuthModule,
+        TextBlockModule,
+        FilesModule
     ]
 
 }) // в Nest всё построено вокруг декораторов (@Module - один из них)
