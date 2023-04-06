@@ -4,14 +4,14 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as uuid from 'uuid';
 import { CreateFileDto } from './dto/create-file.dto';
-import { File } from './files.model';
+import { FileModel } from './files.model';
 
 @Injectable()
 export class FilesService {
 
-    constructor(@InjectModel(File) private fileRepository: typeof File) {}
+    constructor(@InjectModel(FileModel) private fileRepository: typeof FileModel) {}
 
-    async createFiles(files, fileDto: CreateFileDto): Promise<File[]> { // file - собственно сам файл
+    async createFiles(files, fileDto: CreateFileDto): Promise<FileModel[]> { // file - собственно сам файл
         try {
             const filesArray = [];
             
