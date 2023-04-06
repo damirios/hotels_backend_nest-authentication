@@ -6,7 +6,7 @@ interface TextBlockCreationAttributes {
     uniqueName: string;
     title: string;
     text: string;
-    image: string; // будем сохранять уникальное название изображения
+    group_name: string;
 }
 
 @Table({tableName: 'text_block'})
@@ -27,7 +27,7 @@ export class TextBlock extends Model<TextBlock, TextBlockCreationAttributes> {
     @Column({type: DataType.STRING, allowNull: false})
     text: string;
 
-    @ApiProperty({description: "Изображение блока"})
+    @ApiProperty({example: 'main-page', description: "Название группы текстовых блоков"})
     @Column({type: DataType.STRING, allowNull: false})
-    image: string;
+    group_name: string;
 }

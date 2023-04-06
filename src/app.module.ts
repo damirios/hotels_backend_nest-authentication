@@ -14,6 +14,7 @@ import { TextBlock } from "./text-block/text-block.model";
 import { FilesModule } from './files/files.module';
 import { ServeStaticModule } from "@nestjs/serve-static";
 import * as path from 'path';
+import { File } from "./files/files.model";
 
 // основной модуль нашего приложения
 @Module({
@@ -36,7 +37,7 @@ import * as path from 'path';
             username: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASSWORD,
             database: process.env.POSTGRES_DB,
-            models: [Profile, User, Role, UsersRoles, TextBlock], // здесь содержатся модели (соответствуют таблицам из БД)
+            models: [Profile, User, Role, UsersRoles, TextBlock, File], // здесь содержатся модели (соответствуют таблицам из БД)
             autoLoadModels: true // sequelize будет автоматически создавать таблицы на основе наших моделей
         }),
         ProfilesModule,

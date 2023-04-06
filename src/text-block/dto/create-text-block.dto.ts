@@ -9,4 +9,7 @@ export class CreateTextBlockDto {
 
     @ApiProperty({example: 'Лонгрид по какой-либо крутой штуке', description: "Содержимое текстового блока"})
     readonly text: string;
+
+    @ApiProperty({example: 'main-page', description: "Название группы, к которой относится текстовый блок"})
+    readonly group_name: string;
 }

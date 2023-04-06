@@ -1,6 +1,8 @@
-import { Body, Controller, Get, Param, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UploadedFile, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Roles } from 'src/auth/roles-auth.decorator';
+import { RolesGuard } from 'src/auth/roles.guard';
 import { CreateTextBlockDto } from './dto/create-text-block.dto';
 import { TextBlockService } from './text-block.service';
 
@@ -11,10 +13,32 @@ export class TextBlockController {
     constructor(private textBlockService: TextBlockService) {}
 
     @ApiOperation({summary: "Создание нового текстового блока"})
+    @Roles("admin") // через запятую указываем, каким ролям доступен этот эндпоинт
+    @UseGuards(RolesGuard)
     @Post()
-    @UseInterceptors(FileInterceptor('image'))
-    createTextBlock(@Body() dto: CreateTextBlockDto, @UploadedFile() image) {
-        return this.textBlockService.create(dto, image);
+    @UseInterceptors(FilesInterceptor('files'))
+    createTextBlock(@Body() dto: CreateTextBlockDto, @UploadedFiles() images) {
+        return this.textBlockService.create(dto, images);
+    }
+
+    @ApiOperation({summary: "Получение данных о текстовом блоке по фильтру"})
+    @Get('/getByFilter/?')
+    getByFilter(@Query('block_name') blockName: string, @Query('group_name') groupName: string) {
+        if (blockName) {
+            return this.textBlockService.getOneByUniqueName(blockName);
+        }
+
+        if (groupName) {
+            return this.textBlockService.getByGroup(groupName);
+        }
+
+        return null;
+    }
+
+    @ApiOperation({summary: "Получение данных обо всех текстовых блоках"})
+    @Get()
+    getAllTextBlocks() {
+        return this.textBlockService.getAll();
     }
 
     @ApiOperation({summary: "Получение данных о текстовом блоке по ID"})
@@ -23,15 +47,20 @@ export class TextBlockController {
         return this.textBlockService.getOneByID(id);
     }
 
-    @ApiOperation({summary: "Получение данных о текстовом блоке по уникальному названию"})
-    @Get()
-    getTextBlockByUniqueName(@Query('name') blockName: string) {
-        return this.textBlockService.getOneByUniqueName(blockName);
+    @ApiOperation({summary: "Изменение данных текстового блока"})
+    @Roles("admin") // через запятую указываем, каким ролям доступен этот эндпоинт
+    @UseGuards(RolesGuard)
+    @Put('/:id')
+    @UseInterceptors(FilesInterceptor('files'))
+    updateTextBlock(@Param('id') id, @Body() dto: CreateTextBlockDto, @UploadedFiles() images) {
+        return this.textBlockService.update(+id, dto, images);
     }
 
-    @ApiOperation({summary: "Получение данных обо всех текстовых блоках"})
-    @Get()
-    getAllTextBlocks() {
-        return this.textBlockService.getAll();
+    @ApiOperation({summary: "Удаление текстового блока"})
+    @Roles("admin") // через запятую указываем, каким ролям доступен этот эндпоинт
+    @UseGuards(RolesGuard)
+    @Delete('/:id')
+    deleteTextBlock(@Param('id') id) {
+        return this.textBlockService.delete(+id);
     }
 }
